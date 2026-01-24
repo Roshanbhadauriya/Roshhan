@@ -9,7 +9,7 @@ const Layout = () =>{
       <div className="bg-[#f9f9f9]">
           <Header/>
 <Intro />
-        <Projects/>
+   
       </div>
     </>
   )

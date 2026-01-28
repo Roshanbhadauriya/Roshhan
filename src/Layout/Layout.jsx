@@ -1,6 +1,7 @@
 import Header from "../Components/Header.jsx"
+import Experience from "../Sections/Experience.jsx"
 import Intro from "../Sections/Intro.jsx"
-import Projects from "../Sections/Projects.jsx"
+
 const Layout = () =>{
 
 
@@ -9,7 +10,7 @@ const Layout = () =>{
       <div className="bg-[#f9f9f9]">
           <Header/>
 <Intro />
-   
+<Experience />
       </div>
     </>
   )

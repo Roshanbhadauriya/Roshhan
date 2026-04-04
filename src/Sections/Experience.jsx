@@ -1,4 +1,3 @@
-
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
@@ -17,7 +16,7 @@ const Experience = () => {
   const INITIAL_PADDING = 300;
   const TOTAL_MONTHS = (END_YEAR - START_YEAR + 1) * MONTHS_PER_YEAR;
 
-  // Helper: Parse date to month index (0 to TOTAL_MONTHS)
+  // Helper: Parse date to month index (0 to TOTAL_MONTHS relative to START_YEAR)
   const getMonthIndex = (dateStr) => {
      const monthsMap = {
          "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
@@ -45,13 +44,21 @@ const Experience = () => {
      return (yearDiff * 12) + month;
   };
   
-  // Calculate positions for all items to find the "Furthest" one for Mario's stop point
-  // We need to know where the last item physically sits on this month-scale to stop Mario there.
+  // Find where the earliest experience starts to trim empty space
+  const rawMonthIndices = experienceData.map(item => getMonthIndex(item.date));
+  const timelineStartMonthIdx = rawMonthIndices.length > 0 ? Math.min(...rawMonthIndices) : 0;
+  
+  // Calculate relative positions for all items with the new shifted axis
   const itemPositions = experienceData.map(item => {
-      const monthIdx = getMonthIndex(item.date);
-      return INITIAL_PADDING + (monthIdx * PX_PER_MONTH);
+      const axisIdx = getMonthIndex(item.date) - timelineStartMonthIdx;
+      return INITIAL_PADDING + (axisIdx * PX_PER_MONTH);
   });
-  const maxItemPos = Math.max(...itemPositions); // Mario stops at the furthest item
+  
+  // Need to know where the last item sits
+  const maxItemPos = itemPositions.length > 0 ? Math.max(...itemPositions) : INITIAL_PADDING + 100;
+  
+  // Base timeline line starts exactly at the first node
+  const minLinePos = INITIAL_PADDING; 
 
   // Animation constants
   const MARIO_DURATION = 5; // seconds
@@ -62,6 +69,8 @@ const Experience = () => {
   for (let y = START_YEAR; y <= END_YEAR; y++) {
     years.push(y);
   }
+  
+  const displayedMonthsCount = TOTAL_MONTHS - timelineStartMonthIdx;
 
   return (
     <section id="experience" className="relative w-full h-screen bg-background overflow-hidden flex flex-col justify-center">
@@ -84,25 +93,28 @@ const Experience = () => {
             <div 
                 className="h-full relative flex items-center"
                 style={{ 
-                    // Width = Padding + (Total Months * Width) + End Padding
-                    width: `${INITIAL_PADDING + (TOTAL_MONTHS * PX_PER_MONTH) + 500}px` 
+                    // Width = Padding + Remaining Months + End Padding
+                    width: `${INITIAL_PADDING + (displayedMonthsCount * PX_PER_MONTH) + 500}px` 
                 }}
             >
                 
-                {/* Main Horizontal Axis */}
-                <div className="absolute left-0 right-0 h-[1px] bg-gray-300 top-1/2 transform -translate-y-1/2" />
+                {/* Main Horizontal Axis: Starts explicitly at the very first element's dot */}
+                <div 
+                  className="absolute right-0 h-[1px] bg-gray-300 top-1/2 transform -translate-y-1/2" 
+                  style={{ left: `${minLinePos}px` }}
+                />
 
-                {/* Month Ticks (Using Scale) */}
-                {Array.from({ length: TOTAL_MONTHS }).map((_, globalMonthIdx) => {
-                    const tickPos = INITIAL_PADDING + (globalMonthIdx * PX_PER_MONTH);
+                {/* Month Ticks (Using Scale) - Iterates from the start month index */}
+                {Array.from({ length: displayedMonthsCount }).map((_, idx) => {
+                    const globalMonthIdx = timelineStartMonthIdx + idx;
+                    const tickPos = INITIAL_PADDING + (idx * PX_PER_MONTH);
                     const isYearStart = globalMonthIdx % 12 === 0;
 
                     // Animation Interaction Logic
-                    // Only animate if the tick is "before" or "at" the finish line (maxItemPos)
                     const shouldAnimate = tickPos <= maxItemPos;
-                    // Progress ratio derived from Mario's path (0 to maxItemPos)
-                    // Note: Mario effectively travels from 0 to maxItemPos.
-                    const progress = tickPos / maxItemPos;
+                    // Progress ratio derived from Mario's path (traveling from minLinePos to maxItemPos)
+                    const travelDistance = maxItemPos - minLinePos;
+                    const progress = travelDistance > 0 ? (tickPos - minLinePos) / travelDistance : 0;
                     const animDelay = MARIO_DELAY + (progress * MARIO_DURATION);
 
                     return shouldAnimate ? (
@@ -131,8 +143,11 @@ const Experience = () => {
                 {/* Background Years */}
                 {years.map((year, index) => {
                     const yearStartMonth = (year - START_YEAR) * 12;
-                    // Center of the year = Start Month Pixel + (6 Months * Width)
-                    const centerPx = INITIAL_PADDING + (yearStartMonth * PX_PER_MONTH) + (6 * PX_PER_MONTH);
+                    const axisIdx = yearStartMonth - timelineStartMonthIdx;
+                    // Only render year if it's reasonably in bounds frame
+                    if (axisIdx < -12) return null; 
+                    
+                    const centerPx = INITIAL_PADDING + (axisIdx * PX_PER_MONTH) + (6 * PX_PER_MONTH);
                     const isAbove = index % 2 === 0;
 
                     return (
@@ -153,15 +168,16 @@ const Experience = () => {
                     );
                 })}
 
-
-                {/* Timeline Items - Positioned by Month */}
+                {/* Timeline Items - Positioned by relative Month axis */}
                 {experienceData.map((item, index) => {
-                    const monthIdx = getMonthIndex(item.date);
-                    if (monthIdx < 0) return null;
-                    const leftPos = INITIAL_PADDING + (monthIdx * PX_PER_MONTH);
+                    const axisIdx = getMonthIndex(item.date) - timelineStartMonthIdx;
+                    if (axisIdx < 0) return null;
+                    
+                    const leftPos = INITIAL_PADDING + (axisIdx * PX_PER_MONTH);
 
-                    // Animation Delay for dots
-                    const progress = leftPos / maxItemPos;
+                    // Animation Delay for specific experience dot reveal
+                    const travelDistance = maxItemPos - minLinePos;
+                    const progress = travelDistance > 0 ? (leftPos - minLinePos) / travelDistance : 0;
                     const animDelay = MARIO_DELAY + (progress * MARIO_DURATION);
                     
                     return (
@@ -179,7 +195,7 @@ const Experience = () => {
                 {experienceData.length > 0 && (
                     <motion.div
                         className="absolute top-1/2 z-20 pointer-events-none"
-                        initial={{ left: '0px' }} 
+                        initial={{ left: `${minLinePos}px` }} 
                         whileInView={{ 
                             left: `${maxItemPos}px` 
                         }}
@@ -203,7 +219,7 @@ const Experience = () => {
         </div>
 
         <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground z-20 pointer-events-none">
-            Current: Frontend Developer &bull; Innovquant Solutions Pvt Ltd
+            Current: Frontend Developer &bull; Zeroteq Software Pvt Ltd
         </div>
     </section>
   );

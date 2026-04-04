@@ -1,14 +1,5 @@
 export const experienceData = [
   {
-    id: 1,
-    title: "Technical Writer (Contributor)",
-    org: "CodeCademy (Open Source)",
-    date: "2024", 
-    type: "work",
-    link: "#",
-    description: "Authored technical documentation on R language and HTML topics, attracting over 20,000 students."
-  },
-  {
     id: 4,
     title: "Nights and Weekends S5",
     org: "buildspace",
@@ -30,9 +21,18 @@ export const experienceData = [
     id: 3,
     title: "Frontend Developer",
     org: "InnovQuant Solution Pvt Ltd",
-    date: "Apr 2025 - Present",
+    date: "Apr 2025 - Feb 2026",
     type: "work",
     link: "#",
     description: "Led development of React-based platforms, ESB Middleware interface, and trading algorithm platform."
+  },
+  {
+    id: 5,
+    title: "Frontend Developer",
+    org: "Zeroteq Software Pvt Ltd",
+    date: "Feb 2026 - Present",
+    type: "work",
+    link: "#",
+    description: "Working on modern frontend features and creating seamless user experiences."
   }
 ];

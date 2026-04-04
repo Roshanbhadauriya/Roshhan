@@ -47,8 +47,8 @@ const Intro = () => {
 
 </Fade>
             <Fade duration={2000} triggerOnce direction="up">
-<SocialHandles />
- <div className="mt-10 flex flex-col gap-5 min-[320px]:flex-row min-[320px]:items-center">
+                <SocialHandles />
+              <div className="mt-10 flex flex-col gap-5 min-[320px]:flex-row min-[320px]:items-center">
               <Button
                 variant="primary"
                 size="lg"
@@ -59,7 +59,7 @@ const Intro = () => {
               >
                 Resume
               </Button>
- <Button
+               <Button
                 variant="call"
                 size="lg"
                 className="uppercase"

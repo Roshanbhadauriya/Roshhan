@@ -8,7 +8,7 @@ const Gadgets = () => {
     <section id="gadgets" className="w-full pb-32 pt-10 px-6 md:px-12 lg:px-24 bg-[#272727] text-white">
       <div className="max-w-6xl mx-auto flex flex-col items-center">
         
-        {gadgetsData.map((gadget, index) => (
+        {gadgetsData.map((gadget) => (
           <motion.div 
             key={gadget.id}
             initial={{ opacity: 0, y: 40 }}

@@ -37,7 +37,7 @@ const Projects = () => {
     >
       <div className="max-w-7xl mx-auto space-y-40">
         
-        {projectsData.map((project, idx) => {
+        {projectsData.map((project) => {
           // Simple reveal animation parameter per project
           return (
             <motion.div 

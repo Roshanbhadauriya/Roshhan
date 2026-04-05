@@ -37,14 +37,14 @@ export function GlitchText({
     }
   }
 
-  function startAnimation() {
+  const startAnimation = React.useCallback(() => {
     setHasStarted(true);
     setDisplayText(" ".repeat(text.length));
     setCurrentPhase("phase1");
     setAnimationStep(0);
-  }
+  }, [text.length]);
 
-  const runPhase1 = () => {
+  const runPhase1 = React.useCallback(() => {
     const maxSteps = text.length * 2;
     const currentLength = Math.min(animationStep + 1, text.length);
 
@@ -66,9 +66,9 @@ export function GlitchText({
       setCurrentPhase("phase2");
       setAnimationStep(0);
     }
-  };
+  }, [animationStep, text.length]);
 
-  const runPhase2 = () => {
+  const runPhase2 = React.useCallback(() => {
     const revealedCount = Math.floor(animationStep / 2);
     const chars = [];
 
@@ -99,13 +99,13 @@ export function GlitchText({
         intervalRef.current = null;
       }
     }
-  };
+  }, [animationStep, text]);
 
   useEffect(() => {
     if (shouldAnimate && !hasStarted) {
       clearStartTimeout();
       if (delay <= 0) {
-        startAnimation();
+        window.setTimeout(() => startAnimation(), 0);
         return;
       }
       startTimeoutRef.current = window.setTimeout(() => {
@@ -114,7 +114,7 @@ export function GlitchText({
       }, delay * 1000);
     }
     return () => clearStartTimeout();
-  }, [shouldAnimate, hasStarted, delay, text.length]);
+  }, [shouldAnimate, hasStarted, delay, startAnimation]);
 
   useEffect(() => {
     if (!hasStarted) {
@@ -138,14 +138,14 @@ export function GlitchText({
         clearInterval(intervalRef.current);
       }
     };
-  }, [currentPhase, animationStep, text, speed, hasStarted]);
+  }, [currentPhase, hasStarted, runPhase1, runPhase2, speed]);
 
   // Handle text prop changes by restarting
   useEffect(() => {
     if (hasStarted && displayText !== text && currentPhase === "phase2" && animationStep >= text.length * 2 - 1) {
-       startAnimation();
+       window.setTimeout(() => startAnimation(), 0);
     }
-  }, [text]);
+  }, [text, hasStarted, displayText, currentPhase, animationStep, startAnimation]);
 
   return (
     <span

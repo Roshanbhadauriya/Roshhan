@@ -5,24 +5,15 @@ import GlitchText from './GlitchText';
 const HolaLoader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState('');
-  const [sysInfo, setSysInfo] = useState({
-    screen: '...',
-    platform: '...',
-    network: '...',
-    cores: '...',
-    agent: '...'
-  });
+  const [sysInfo] = useState(() => ({
+    screen: typeof window !== 'undefined' ? `${window.screen.width}X${window.screen.height}` : 'UNKNOWN',
+    platform: typeof navigator !== 'undefined' ? (navigator.platform || 'UNKNOWN').toUpperCase() : 'UNKNOWN',
+    network: typeof navigator !== 'undefined' && (navigator.connection || {}).effectiveType ? navigator.connection.effectiveType.toUpperCase() : 'UNKNOWN',
+    cores: typeof navigator !== 'undefined' ? (navigator.hardwareConcurrency || 'N/A') : 'N/A',
+    agent: typeof navigator !== 'undefined' ? navigator.userAgent.split(' ')[0] : ''
+  }));
 
   useEffect(() => {
-    // Initial system info fetch
-    setSysInfo({
-      screen: typeof window !== 'undefined' ? `${window.screen.width}X${window.screen.height}` : 'UNKNOWN',
-      platform: typeof navigator !== 'undefined' ? (navigator.platform || 'UNKNOWN').toUpperCase() : 'UNKNOWN',
-      network: typeof navigator !== 'undefined' && navigator.connection ? navigator.connection.effectiveType.toUpperCase() : 'UNKNOWN',
-      cores: typeof navigator !== 'undefined' ? (navigator.hardwareConcurrency || 'N/A') : 'N/A',
-      agent: typeof navigator !== 'undefined' ? navigator.userAgent.split(' ')[0] : ''
-    });
-
     // Fast timer for ms-level time updates
     const timeInterval = setInterval(() => {
       const now = new Date();

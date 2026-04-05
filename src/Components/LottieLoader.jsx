@@ -1,6 +1,5 @@
 import Lottie from "lottie-react";
 import animationData from "../assets/lottie/Loader.json";
-import animationData2 from "../assets/lottie/Loader2.json";
 const LottieLoader = () => {
   return (
     <div className="lottie-loader flex">

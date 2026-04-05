@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Lottie from "lottie-react";
 import marioRunAnimation from "../assets/lottie/Running.json";
 import { experienceData } from "../data/experience";
@@ -72,29 +72,38 @@ const Experience = () => {
   
   const displayedMonthsCount = TOTAL_MONTHS - timelineStartMonthIdx;
 
+  const { scrollYProgress } = useScroll({ 
+      target: containerRef,
+      offset: ["start start", "end end"]
+  });
+  const smoothProgress = useSpring(scrollYProgress, { 
+      stiffness: 70, 
+      damping: 20, 
+      mass: 0.2,
+      restDelta: 0.001 
+  });
+  
+  // Use matching string templates so Framer Motion can properly tween the internal numbers!
+  const x = useTransform(smoothProgress, [0, 1], ["calc(0% + 0vw)", "calc(-100% + 100vw)"]);
+
   return (
-    <section id="experience" className="relative w-full h-screen bg-background overflow-hidden flex flex-col justify-center">
+    <div ref={containerRef} className="relative h-[400vh] bg-brand-bg font-brand-sans">
+      <section id="experience" className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center">
         
         {/* Section Heading */}
         <div className="absolute top-20 left-0 w-full px-10 md:px-20 z-20 pointer-events-none">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">Experience</h2>
-            <div className="w-20 h-1 bg-primary rounded-full opacity-50" />
+            <h2 className="text-4xl md:text-5xl font-bold text-brand-text mb-4 tracking-tight">Experience</h2>
+            <div className="w-20 h-1 bg-brand-accent rounded-full opacity-50" />
         </div>
 
-        {/* Horizontal Scroll Container */}
-        <div 
-            ref={containerRef}
-            className="w-full h-full overflow-x-auto overflow-y-hidden hide-scrollbar relative"
-            style={{ 
-                scrollBehavior: 'smooth',
-                cursor: 'grab' 
-            }}
-        >
-            <div 
+        {/* Translation Container */}
+        <div className="w-full h-full relative">
+            <motion.div 
                 className="h-full relative flex items-center"
                 style={{ 
                     // Width = Padding + Remaining Months + End Padding
-                    width: `${INITIAL_PADDING + (displayedMonthsCount * PX_PER_MONTH) + 500}px` 
+                    width: `${INITIAL_PADDING + (displayedMonthsCount * PX_PER_MONTH) + 500}px`,
+                    x
                 }}
             >
                 
@@ -120,8 +129,8 @@ const Experience = () => {
                     return shouldAnimate ? (
                          <motion.div 
                             key={`tick-${globalMonthIdx}`}
-                            initial={{ backgroundColor: isYearStart ? "#9ca3af" : "#d1d5db" }} // gray-400 or gray-300
-                            whileInView={{ backgroundColor: "#60a5fa" }} // blue-400 on active
+                            initial={{ backgroundColor: isYearStart ? "#b2a896" : "#dfdbd2" }}
+                            whileInView={{ backgroundColor: "#5d5343" }} 
                             viewport={{ once: true }}
                             transition={{ delay: animDelay, duration: 0.1 }}
                             className={`absolute rounded-full top-1/2 transform -translate-y-1/2 -translate-x-1/2
@@ -133,7 +142,7 @@ const Experience = () => {
                          <div 
                             key={`tick-${globalMonthIdx}`}
                             className={`absolute rounded-full top-1/2 transform -translate-y-1/2 -translate-x-1/2
-                                ${isYearStart ? 'w-3 h-3 bg-gray-400' : 'w-1 h-1 bg-gray-300'}
+                                ${isYearStart ? 'w-3 h-3 bg-brand-accent/50' : 'w-1 h-1 bg-[#dfdbd2]'}
                             `}
                             style={{ left: `${tickPos}px` }}
                         />
@@ -153,7 +162,7 @@ const Experience = () => {
                     return (
                         <div 
                             key={year}
-                            className={`absolute font-bold pointer-events-none select-none z-0 flex justify-center items-center text-foreground/5`}
+                            className={`absolute font-bold pointer-events-none select-none z-0 flex justify-center items-center text-brand-text/[0.03]`}
                             style={{ 
                                 left: `${centerPx}px`,
                                 top: '50%',
@@ -215,13 +224,14 @@ const Experience = () => {
                     </motion.div>
                 )}
 
-            </div>
+            </motion.div>
         </div>
 
-        <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground z-20 pointer-events-none">
+        <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-brand-muted z-20 pointer-events-none">
             Current: Frontend Developer &bull; Zeroteq Software Pvt Ltd
         </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

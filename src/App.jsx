@@ -2,6 +2,9 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Layout from "./Layout/Layout.jsx";
 import HolaLoader from "./Components/HolaLoader.jsx";
+import AllProjects from "./Pages/AllProjects.jsx";
+import AllGadgets from "./Pages/AllGadgets.jsx";
+import { Routes, Route } from "react-router";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,11 @@ function App() {
             animate={{ opacity: 1 }} 
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            <Layout />
+            <Routes>
+              <Route path="/" element={<Layout />} />
+              <Route path="/projects" element={<AllProjects />} />
+              <Route path="/gadgets" element={<AllGadgets />} />
+            </Routes>
           </motion.div>
         )}
       </AnimatePresence>

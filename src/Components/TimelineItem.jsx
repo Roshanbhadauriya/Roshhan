@@ -17,7 +17,7 @@ const TimelineItem = ({ item, index, animDelay = 0 }) => {
       {/* 1. The Vertical Line Connector */}
       {/* Extends from the anchor point (y=0) outwards */}
       <div 
-        className="absolute w-[1px] bg-gray-300 group-hover:bg-primary transition-colors duration-300"
+        className="absolute w-[1px] bg-[#dfdbd2] group-hover:bg-brand-accent transition-colors duration-300"
         style={{
             height: `${height}px`,
             // If top, line goes UP from anchor (bottom: 0). 
@@ -41,17 +41,17 @@ const TimelineItem = ({ item, index, animDelay = 0 }) => {
       >
           {/* The Dot - Animated */}
           <motion.div 
-            initial={{ backgroundColor: "#d1d5db" }} // start gray-300
-            whileInView={{ backgroundColor: item.type === 'project' ? '#fb923c' : '#60a5fa' }}
+            initial={{ backgroundColor: "#dfdbd2" }}
+            whileInView={{ backgroundColor: item.type === 'project' ? '#b2a896' : '#5d5343' }}
             viewport={{ once: true }}
             transition={{ delay: animDelay, duration: 0.3 }}
             className={`w-3 h-3 rounded-full flex-none z-10 
-              border border-background ring-2 ring-transparent group-hover:ring-primary/20 transition-all`}
+              border border-brand-bg ring-2 ring-transparent group-hover:ring-brand-accent/20 transition-all`}
           />
 
           {/* The Text Card */}
           <div className={`flex flex-col ${isTop ? 'mb-2' : 'mt-2'}`}>
-             <span className="text-[10px] text-muted-foreground/80 font-mono tracking-wider">{item.date}</span>
+             <span className="text-[10px] text-brand-muted font-mono tracking-wider">{item.date}</span>
              <a 
                 href={item.link} 
                 onClick={(e) => {
@@ -59,11 +59,11 @@ const TimelineItem = ({ item, index, animDelay = 0 }) => {
                     e.preventDefault();
                   }
                 }}
-                className="text-sm font-bold text-foreground hover:text-primary transition-colors whitespace-normal leading-tight block w-full text-left"
+                className="text-sm font-bold text-brand-text hover:text-brand-accent transition-colors whitespace-normal leading-tight block w-full text-left"
             >
                 {item.title}
              </a>
-             <span className="text-[10px] text-gray-500 font-medium mt-0.5">{item.org}</span>
+             <span className="text-[10px] text-brand-muted mt-0.5">{item.org}</span>
           </div>
       </div>
     </div>

@@ -1,5 +1,15 @@
 @import "tailwindcss";
 @import "@radix-ui/themes/styles.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Will Paterson Hand';
+  src: url('https://cdn.prod.website-files.com/651bc82c86167cb0e2890642/68fa0dd8905d76966a79d895_WillPatersonHandRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 @theme {
   --color-background: hsl(var(--background));
@@ -35,6 +45,16 @@
   --color-hashnode: #2962ff;
   --color-leetcode: #f89f1b;
   --color-codechef: #5b4638;
+
+  --color-brand-bg: #fcfbf7;
+  --color-brand-text: #2c2924;
+  --color-brand-muted: #4e4942;
+  --color-brand-button: #5d5343;
+  --color-brand-accent: #b2a896;
+  --color-brand-handwriting: #806e54;
+
+  --font-brand-sans: "Inter", Arial, sans-serif;
+  --font-handwriting: "Will Paterson Hand", "Caveat", cursive;
 }
 
 @layer base {
@@ -117,4 +137,5 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 }

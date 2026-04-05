@@ -70,7 +70,7 @@ const HolaLoader = ({ onComplete }) => {
         <span className="opacity-60 flex">[<GlitchText delay={0.5} speed={10}>{sysInfo.platform}</GlitchText>]</span>
       </div>
 
-      <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 font-mono text-[9px] md:text-[11px] text-black/30 uppercase tracking-[0.2em] pointer-events-none flex items-center gap-3">
+      {/* <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 font-mono text-[9px] md:text-[11px] text-black/30 uppercase tracking-[0.2em] pointer-events-none flex items-center gap-3">
         <GlitchText delay={0.3} speed={15}>SYS.NET</GlitchText>
         <span className="opacity-60 flex">[<GlitchText delay={0.6} speed={10}>{sysInfo.network}</GlitchText>]</span>
       </div>
@@ -78,7 +78,7 @@ const HolaLoader = ({ onComplete }) => {
       <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 font-mono text-[9px] md:text-[11px] text-black/30 uppercase tracking-[0.2em] pointer-events-none flex items-center gap-3">
         <GlitchText delay={0.4} speed={15}>SYS.CORE</GlitchText>
         <span className="opacity-60 flex">[<GlitchText delay={0.7} speed={10}>{sysInfo.cores}</GlitchText>]</span>
-      </div>
+      </div> */}
 
       <div className="absolute left-4 md:left-8 bottom-4 md:bottom-8 font-mono text-[9px] md:text-[11px] text-black/30 uppercase tracking-[0.2em] pointer-events-none flex items-center gap-3">
         <GlitchText delay={0.5} speed={15}>SYS.RES</GlitchText>

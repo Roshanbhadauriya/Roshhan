@@ -16,10 +16,10 @@ const AllGadgets = () => {
       {/* Absolute Header Navigation */}
       <nav className="fixed top-0 left-0 w-full px-6 py-8 md:px-12 lg:px-24 flex items-center justify-between z-50 mix-blend-difference">
         <Link 
-          to="/" 
+          to="/#gadgets" 
           className="text-xs md:text-sm font-mono uppercase tracking-widest hover:opacity-70 transition-opacity flex items-center gap-2"
         >
-          <span>&larr;</span> Back to Home
+          <span>&larr;</span> Back to Gadgets
         </Link>
         <div className="text-xs uppercase tracking-widest font-mono opacity-50">
           Loadout // {gadgetsData.length}

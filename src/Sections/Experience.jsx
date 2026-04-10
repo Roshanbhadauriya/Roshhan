@@ -98,7 +98,7 @@ const Experience = () => {
 
   return (
     <div ref={containerRef} className="relative md:h-[400vh] h-auto bg-brand-bg font-brand-sans">
-      <section id="experience" className="md:sticky md:top-0 w-full md:h-screen h-[500px] overflow-hidden flex flex-col justify-center">
+      <section id="experience" className="md:sticky md:top-0 w-full md:h-screen h-[100dvh] overflow-hidden flex flex-col justify-center">
         
         {/* Section Heading */}
         <div className="absolute top-20 left-0 w-full px-10 md:px-20 z-20 pointer-events-none">

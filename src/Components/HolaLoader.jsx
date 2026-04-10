@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import GlitchText from './GlitchText';
+import me1 from '../assets/Roshan.JPG';
+import me2 from '../assets/me2.jpg';
+import prize from '../assets/prize.JPG';
 
 const HolaLoader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState('');
+  const [assetsReady, setAssetsReady] = useState(false);
   const [sysInfo] = useState(() => ({
     screen: typeof window !== 'undefined' ? `${window.screen.width}X${window.screen.height}` : 'UNKNOWN',
     platform: typeof navigator !== 'undefined' ? (navigator.platform || 'UNKNOWN').toUpperCase() : 'UNKNOWN',
@@ -14,23 +18,50 @@ const HolaLoader = ({ onComplete }) => {
   }));
 
   useEffect(() => {
-    // Fast timer for ms-level time updates
+    // 1. Preload Critical Images
+    const criticalImages = [me1, me2, prize];
+    let loadedCount = 0;
+    
+    if (criticalImages.length === 0) {
+      setAssetsReady(true);
+    } else {
+      criticalImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === criticalImages.length) {
+            setAssetsReady(true);
+          }
+        };
+        img.onerror = () => {
+          // Continue even if an image fails to load to avoid getting stuck
+          loadedCount++;
+          if (loadedCount === criticalImages.length) {
+            setAssetsReady(true);
+          }
+        };
+      });
+    }
+
+    // 2. Fast timer for ms-level time updates
     const timeInterval = setInterval(() => {
       const now = new Date();
       const pad = (n, m=2) => n.toString().padStart(m, '0');
       setTime(`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}:${pad(now.getMilliseconds(), 3)}`);
     }, 45);
 
-    // Original fill loader
+    return () => {
+      clearInterval(timeInterval);
+    };
+  }, []);
+
+  useEffect(() => {
+    // 3. Original fill loader
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          if (onComplete) {
-            setTimeout(() => {
-               onComplete();
-            }, 600);
-          }
           return 100;
         }
         return prev + 1;
@@ -39,9 +70,18 @@ const HolaLoader = ({ onComplete }) => {
 
     return () => {
       clearInterval(interval);
-      clearInterval(timeInterval);
     };
-  }, [onComplete]);
+  }, []);
+
+  // 4. Handle Completion (Progress 100% AND Assets Ready)
+  useEffect(() => {
+    if (progress === 100 && assetsReady) {
+      const timer = setTimeout(() => {
+        if (onComplete) onComplete();
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [progress, assetsReady, onComplete]);
 
   // Calculate dynamic Y position based on progress
   // 260 is below the text, -40 is fully above the text

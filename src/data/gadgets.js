@@ -1,3 +1,5 @@
+import dacImg from "../assets/gadgets/Untitled.jpg";
+
 export const gadgetsData = [
   {
     id: 1,
@@ -25,7 +27,24 @@ export const gadgetsData = [
     image: "https://urx.co.in/cdn/shop/files/Blackberry_Pink-1.jpg?v=1758286290&width=1920",
     links: [
       { label: "Official Site", url: "https://urx.co.in/products/ajazz-ak820-max-plus-keyboard-orange-copy?ref=pymplpsy&variant=46499569664239" },
-      { label: "", url: "" }
+    ]
+  },
+  {
+    id: 4,
+    title: "FIFINE A6T microphone",
+    description: "FIFINE AmpliGame A6T USB Condenser Microphone Kit with Boom Arm Stand—featuring RGB lighting and superior sound quality for gaming and streaming.",
+    image: "https://thecosmiccircus.com/wp-content/uploads/2024/02/Review-2-1.jpg",
+    links: [
+      { label: "Official Site", url: "https://fifinemicrophone.com/products/fifine-ampligame-a6t-microphone-kit-boom-arm?_pos=1&_sid=2b823bab5&_ss=r" }
+    ]
+  },
+  {
+    id: 5,
+    title: "AUDIOCULAR D07 Slim CX31993 Portable DAC",
+    description: "Portable USB-C DAC with CX31993 chip for high-fidelity audio output on the go. Slim and powerful.",
+    image: dacImg,
+    links: [
+      { label: "Check Specs", url: "https://conceptkart.com/products/audiocular-spark-hi-res-dac-dongle-cx31993-max-amp" }
     ]
   }
 ];

@@ -36,14 +36,14 @@ const AllGadgets = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className={`w-full flex flex-col-reverse md:flex-row bg-[#1c1c1c] rounded-2xl overflow-hidden shadow-2xl border border-white/5`}
+            className={`w-full flex flex-col-reverse md:flex-row bg-[#1c1c1c] rounded-2xl overflow-hidden mb-16 border border-white/5 md:h-[450px] group`}
           >
             {/* Context Column */}
             <div className="w-full md:w-5/12 p-10 md:p-14 flex flex-col justify-center">
               <h3 className="text-2xl md:text-3xl font-brand-sans font-medium mb-3 tracking-tight">{gadget.title}</h3>
-              <p className="text-[#a0a0a0] font-brand-sans text-sm md:text-base leading-relaxed mb-10">{gadget.description}</p>
+              <p className="text-[#a0a0a0] font-brand-sans text-sm md:text-base leading-relaxed mb-6 lg:mb-10 line-clamp-3 md:line-clamp-none whitespace-normal">{gadget.description}</p>
               
-              <ul className="flex flex-col border-t border-white/10">
+              <ul className="flex flex-col border-t border-white/10 mt-auto">
                 {gadget.links.map((link, i) => (
                   <li key={i} className="border-b border-white/10">
                     <a 
@@ -58,13 +58,17 @@ const AllGadgets = () => {
             </div>
             
             {/* Image Showcase Box */}
-            <div className="w-full md:w-7/12 bg-[#252525] p-12 md:p-20 flex justify-center items-center">
-               <img 
-                 src={gadget.image} 
-                 alt={gadget.title} 
-                 className="w-full max-h-[350px] object-contain drop-shadow-[0_20px_25px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" 
-                 referrerPolicy="no-referrer"
-               />
+            <div className="w-full md:w-7/12 bg-[#252525] flex justify-center items-center overflow-hidden h-[300px] md:h-full">
+               <div className="w-full h-full relative">
+                 <img 
+                   src={gadget.image} 
+                   alt={gadget.title} 
+                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" 
+                   referrerPolicy="no-referrer"
+                 />
+                 {/* Subtle gradient overlay to blend with card if image is dark */}
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+               </div>
             </div>
           </motion.div>
         ))}

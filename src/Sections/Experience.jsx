@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Lottie from "lottie-react";
 import marioRunAnimation from "../assets/lottie/Running.json";
@@ -7,6 +7,16 @@ import TimelineItem from "../Components/TimelineItem";
 
 const Experience = () => {
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // Match Tailwind md breakpoint
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Configuration for Month-Scale Layout
   const START_YEAR = 2024;
@@ -74,7 +84,7 @@ const Experience = () => {
 
   const { scrollYProgress } = useScroll({ 
       target: containerRef,
-      offset: ["start start", "end end"]
+      offset: ["start 60%", "end end"]
   });
   const smoothProgress = useSpring(scrollYProgress, { 
       stiffness: 70, 
@@ -87,8 +97,8 @@ const Experience = () => {
   const x = useTransform(smoothProgress, [0, 1], ["calc(0% + 0vw)", "calc(-100% + 100vw)"]);
 
   return (
-    <div ref={containerRef} className="relative h-[400vh] bg-brand-bg font-brand-sans">
-      <section id="experience" className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center">
+    <div ref={containerRef} className="relative md:h-[400vh] h-auto bg-brand-bg font-brand-sans">
+      <section id="experience" className="md:sticky md:top-0 w-full md:h-screen h-[500px] overflow-hidden flex flex-col justify-center">
         
         {/* Section Heading */}
         <div className="absolute top-20 left-0 w-full px-10 md:px-20 z-20 pointer-events-none">
@@ -97,13 +107,13 @@ const Experience = () => {
         </div>
 
         {/* Translation Container */}
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative overflow-x-auto scrollbar-hide py-10 md:py-0">
             <motion.div 
                 className="h-full relative flex items-center"
                 style={{ 
                     // Width = Padding + Remaining Months + End Padding
                     width: `${INITIAL_PADDING + (displayedMonthsCount * PX_PER_MONTH) + 500}px`,
-                    x
+                    x: isMobile ? 0 : x
                 }}
             >
                 

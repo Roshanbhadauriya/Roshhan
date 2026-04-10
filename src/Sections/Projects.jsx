@@ -9,24 +9,19 @@ const Projects = () => {
   // Track the scroll of this specific section
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    // Start fading when top of section crosses vertically middle of screen
-    offset: ["start 60%", "end end"] 
+    // Start color change as it enters and finish by the 60% mark
+    offset: ["start 95%", "start 60%"] 
   });
   
-  // Smooth out the progress for color tweening so it doesn't judder
+  // Smooth out the progress for color tweening
   const smoothColorProgress = useSpring(scrollYProgress, {
     stiffness: 50, damping: 25, mass: 0.5, restDelta: 0.001
   });
 
-  // Interpolate Background off-white -> deep charcoal grey matching screenshots. 
-  // [0, 0.4] stretches the transition across 40% of the scroll instead of 20%
-  const bgColor = useTransform(smoothColorProgress, [0, 0.4], ["#fcfbf7", "#272727"]);
-  
-  // Interpolate Text dark -> stark white
-  const textColor = useTransform(smoothColorProgress, [0, 0.4], ["#2c2924", "#F4F4F4"]);
-  
-  // Interpolate Border colors for the pill tags
-  const borderColor = useTransform(smoothColorProgress, [0, 0.4], ["rgba(44, 41, 36, 0.2)", "rgba(244, 244, 244, 0.4)"]);
+  // Now the color will fully change between 95% (almost hidden) and 60% (prominent)
+  const bgColor = useTransform(smoothColorProgress, [0, 1], ["#fcfbf7", "#272727"]);
+  const textColor = useTransform(smoothColorProgress, [0, 1], ["#2c2924", "#F4F4F4"]);
+  const borderColor = useTransform(smoothColorProgress, [0, 1], ["rgba(44, 41, 36, 0.2)", "rgba(244, 244, 244, 0.4)"]);
 
   return (
     <motion.section 
@@ -76,7 +71,7 @@ const Projects = () => {
                 </div>
 
               {/* Showcase Image Container */}
-              <div className="w-full relative overflow-hidden bg-black/5 aspect-[16/10] md:aspect-[21/9]">
+              <div className="w-full relative overflow-hidden bg-black/5 aspect-[16/9] md:aspect-[21/9]">
                 <img 
                   src={project.image} 
                   alt={`${project.title} showcase`}

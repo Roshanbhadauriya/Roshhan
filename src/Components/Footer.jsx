@@ -153,8 +153,8 @@ const Footer = () => {
             data-reveal
             className="text-sm md:text-base leading-relaxed text-[#a0a0a0] mb-8 max-w-lg opacity-0"
           >
-            Currently working as a Frontend Developer at Zeroteq Software Pvt Ltd.
-            Available for projects, collaborations, and experiments.
+            Currently taking a health break to focus on physical well-being.
+            Available for future collaborations and experiments.
           </p>
 
           {/* CTA */}

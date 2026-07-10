@@ -1,7 +1,17 @@
 import mosuraImg from "../assets/projects/Mosura.png";
 import senseiImg from "../assets/projects/sensei.png";
+import autobotImg from "../assets/projects/Autobot.png";
 
 export const projectsData = [
+  {
+    id: 4,
+    title: "AutoBot",
+    tags: ["React", "Next.js", "GitHub API", "Tailwind CSS", "SaaS"],
+    year: "2026",
+    link: "https://github-autobot.vercel.app/",
+    image: autobotImg,
+    description: "Built an autonomous workflow orchestrator that listens to GitHub events. Through intelligent comparison logic and API integrations, it automates issue triage, priority labeling, and webhook alerts."
+  },
   {
     id: 1,
     title: "Mosura",

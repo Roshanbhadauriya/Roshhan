@@ -238,7 +238,7 @@ const Experience = () => {
         </div>
 
         <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-brand-muted z-20 pointer-events-none">
-            Current: Frontend Developer &bull; Zeroteq Software Pvt Ltd
+            Current: Health Break &bull; Self-Care
         </div>
       </section>
     </div>

@@ -17,9 +17,18 @@ const AllProjects = () => {
       <nav className="fixed top-0 left-0 w-full px-6 py-8 md:px-12 lg:px-24 flex items-center justify-between z-50 mix-blend-difference">
         <Link 
           to="/#projects" 
-          className="text-xs md:text-sm font-mono uppercase tracking-widest hover:opacity-70 transition-opacity flex items-center gap-2"
+          aria-label="Back to projects"
+          className="group inline-flex items-center py-2 text-white hover:opacity-70 transition-opacity"
         >
-          <span>&larr;</span> Back to Projects
+          <svg 
+            className="w-6 h-6 md:w-8 md:h-8 transition-transform duration-300 ease-out group-hover:-translate-x-2" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            strokeWidth={1.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+          </svg>
         </Link>
         <div className="text-xs uppercase tracking-widest font-mono opacity-50">
           Archive // {projectsData.length}

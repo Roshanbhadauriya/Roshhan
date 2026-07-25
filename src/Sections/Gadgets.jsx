@@ -6,7 +6,7 @@ import { gadgetsData } from "../data/gadgets";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const GadgetCard = ({ gadget }) => {
+export const GadgetCard = ({ gadget }) => {
   const cardRef = useRef(null);
   const textRef = useRef(null);
   const imageRef = useRef(null);
@@ -81,7 +81,6 @@ const GadgetCard = ({ gadget }) => {
     <div
       ref={cardRef}
       className="w-full flex flex-col-reverse md:flex-row bg-[#1c1c1c] rounded-2xl overflow-hidden mb-16 border border-white/5 md:h-[450px] group"
-      style={{ opacity: 0 }}
     >
       {/* Context Column */}
       <div ref={textRef} className="w-full md:w-5/12 p-10 md:p-14 flex flex-col justify-center">

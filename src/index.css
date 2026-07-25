@@ -148,3 +148,99 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+/* ========================================
+   Dev Heatmap — Dark Theme Overrides
+   ======================================== */
+
+/* Container scoping */
+.heatmap-dark .react-calendar-heatmap {
+  width: 100%;
+}
+
+/* Month / weekday labels */
+.heatmap-dark .react-calendar-heatmap text {
+  font-size: 10px;
+  fill: #555;
+  font-family: "Inter", monospace;
+}
+
+.heatmap-dark .react-calendar-heatmap text.react-calendar-heatmap-month-label {
+  font-size: 10px;
+  fill: #666;
+}
+
+.heatmap-dark
+  .react-calendar-heatmap
+  text.react-calendar-heatmap-weekday-label {
+  font-size: 9px;
+  fill: #555;
+}
+
+/* Base rect styling */
+.heatmap-dark .react-calendar-heatmap rect {
+  rx: 2;
+  ry: 2;
+  cursor: pointer;
+  transition: fill 0.1s ease, stroke 0.1s ease;
+}
+
+.heatmap-dark .react-calendar-heatmap rect:hover {
+  stroke: #ffffff !important;
+  stroke-width: 1.5px !important;
+  fill-opacity: 1;
+  filter: brightness(1.5);
+}
+
+/* Empty cells */
+.heatmap-dark .react-calendar-heatmap .heatmap-color-empty {
+  fill: #2a2a2a;
+}
+
+/* Activity color scale — dark green palette */
+.heatmap-dark .react-calendar-heatmap .heatmap-color-scale-1 {
+  fill: #0e4429;
+}
+.heatmap-dark .react-calendar-heatmap .heatmap-color-scale-2 {
+  fill: #006d32;
+}
+.heatmap-dark .react-calendar-heatmap .heatmap-color-scale-3 {
+  fill: #26a641;
+}
+.heatmap-dark .react-calendar-heatmap .heatmap-color-scale-4 {
+  fill: #39d353;
+}
+
+/* Compact variant — tighter for embedding in columns */
+.heatmap-compact .react-calendar-heatmap {
+  font-size: 8px;
+}
+
+.heatmap-compact .react-calendar-heatmap text {
+  font-size: 8px;
+}
+
+.heatmap-compact .react-calendar-heatmap text.react-calendar-heatmap-month-label {
+  font-size: 8px;
+}
+
+.heatmap-compact .react-calendar-heatmap text.react-calendar-heatmap-weekday-label {
+  font-size: 7px;
+}
+
+/* Suppress default browser SVG title tooltip */
+.heatmap-dark .react-calendar-heatmap rect title {
+  display: none;
+}
+
+/* Shimmer loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+

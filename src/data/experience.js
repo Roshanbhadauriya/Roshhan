@@ -30,7 +30,7 @@ export const experienceData = [
     id: 5,
     title: "Frontend Developer",
     org: "Zeroteq Software Pvt Ltd",
-    date: "Feb 2026 - Jun 2026",
+    date: "Feb 2026 - Mar 2026",
     type: "work",
     link: "#",
     description: "Working on modern frontend features and creating seamless user experiences."
@@ -39,7 +39,7 @@ export const experienceData = [
     id: 6,
     title: "Health Break",
     org: "Self-Care",
-    date: "Jun 2026 - Present",
+    date: "Apr 2026 - Present",
     type: "work",
     link: "#",
     description: "Taking a conscious break to focus on physical and mental well-being, recovery, and personal reflection."

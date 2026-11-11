@@ -5,7 +5,7 @@ import "react-calendar-heatmap/dist/styles.css";
 import { FaGithub } from "react-icons/fa6";
 import { SiLeetcode, SiCodeforces } from "react-icons/si";
 
-const CACHE_KEY = "dev_heatmap_cache_v3";
+const CACHE_KEY = "dev_heatmap_cache_v4";
 const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours
 
 // Platform configs
@@ -13,32 +13,57 @@ const GITHUB_USER = "roshanbhadauriya";
 const LEETCODE_USER = "Roshan_DSA";
 const CODEFORCES_USER = "roshanbhadoriya178";
 
+const FETCH_TIMEOUT_MS = 6000;
+
+// fetch that gives up after FETCH_TIMEOUT_MS so one slow API can't stall the graph
+const fetchWithTimeout = (url) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  return fetch(url, { signal: controller.signal }).finally(() =>
+    clearTimeout(timer)
+  );
+};
+
 const getDateStr = (date) => {
   const d = new Date(date);
   return d.toISOString().split("T")[0];
 };
 
-// Fetch GitHub contributions
+// Fetch GitHub contributions.
+// Primary: jogruber API ({ contributions: [{ date, count }] }).
+// Fallback: deno API ({ contributions: [[{ date, contributionCount }]] }).
 const fetchGitHub = async () => {
-  try {
-    const res = await fetch(
-      `https://github-contributions-api.deno.dev/${GITHUB_USER}.json`
-    );
-    if (!res.ok) throw new Error("GitHub API failed");
-    const data = await res.json();
-    const map = {};
-    if (data.contributions && Array.isArray(data.contributions)) {
+  const sources = [
+    {
+      url: `https://github-contributions-api.jogruber.de/v4/${GITHUB_USER}?y=last`,
+      getCount: (day) => day.count,
+    },
+    {
+      url: `https://github-contributions-api.deno.dev/${GITHUB_USER}.json`,
+      getCount: (day) => day.contributionCount,
+    },
+  ];
+
+  for (const { url, getCount } of sources) {
+    try {
+      const res = await fetchWithTimeout(url);
+      if (!res.ok) throw new Error(`GitHub API failed: ${res.status}`);
+      const data = await res.json();
+      if (!Array.isArray(data.contributions)) {
+        throw new Error("GitHub API returned unexpected shape");
+      }
+      const map = {};
       data.contributions.flat().forEach((day) => {
         if (day.date) {
-          map[day.date] = (map[day.date] || 0) + (day.contributionCount || 0);
+          map[day.date] = (map[day.date] || 0) + (getCount(day) || 0);
         }
       });
+      return map;
+    } catch (e) {
+      console.warn(`GitHub fetch failed (${url}):`, e);
     }
-    return map;
-  } catch (e) {
-    console.warn("GitHub fetch failed:", e);
-    return {};
   }
+  return {};
 };
 
 // Fetch LeetCode submissions calendar
@@ -50,7 +75,7 @@ const fetchLeetCode = async () => {
 
     for (const year of years) {
       try {
-        const res = await fetch(
+        const res = await fetchWithTimeout(
           `https://alfa-leetcode-api.onrender.com/${LEETCODE_USER}/calendar?year=${year}`
         );
         if (!res.ok) continue;
@@ -106,7 +131,7 @@ const fetchCodeforces = async () => {
 
   for (const url of corsProxies) {
     try {
-      const res = await fetch(url);
+      const res = await fetchWithTimeout(url);
       if (!res.ok) continue;
 
       const data = await res.json();
@@ -125,6 +150,8 @@ const fetchCodeforces = async () => {
         });
         return map;
       }
+      // API answered but has no submissions — proxies would return the same
+      if (data.status === "OK") break;
     } catch {
       continue;
     }

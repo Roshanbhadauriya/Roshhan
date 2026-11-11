@@ -39,9 +39,18 @@ export const experienceData = [
     id: 6,
     title: "Health Break",
     org: "Self-Care",
-    date: "Apr 2026 - Present",
+    date: "Apr 2026 - Jul 2026",
     type: "work",
     link: "#",
     description: "Taking a conscious break to focus on physical and mental well-being, recovery, and personal reflection."
+  },
+  {
+    id: 7,
+    title: "Software Developer",
+    org: "Newral",
+    date: "Aug 2026 - Present",
+    type: "work",
+    link: "#",
+    description: "Scaling LMS SaaS platforms (Synappses, Competishun) for 30K+ users with React, NestJS, GraphQL, PostgreSQL, Redis Pub/Sub, and Docker."
   }
 ];

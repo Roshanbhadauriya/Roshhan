@@ -1,8 +1,28 @@
 import mosuraImg from "../assets/projects/Mosura.png";
 import senseiImg from "../assets/projects/sensei.png";
 import autobotImg from "../assets/projects/Autobot.png";
+import synappsesImg from "../assets/projects/synappses.png";
+import competishunImg from "../assets/projects/competishun.png";
 
 export const projectsData = [
+  {
+    id: 5,
+    title: "Synappses",
+    tags: ["Next.js", "NestJS", "GraphQL", "Redis", "FFmpeg/HLS", "Widevine DRM"],
+    year: "2026",
+    link: "https://synappses.in",
+    image: synappsesImg,
+    description: "Scaling Newral's LMS SaaS platform for creator-led education businesses, serving 30K+ users and 2K+ daily students across a microservice and microfrontend architecture."
+  },
+  {
+    id: 6,
+    title: "Competishun",
+    tags: ["React", "NestJS", "PostgreSQL", "Redis", "Docker"],
+    year: "2026",
+    link: "https://competishun.com",
+    image: competishunImg,
+    description: "Optimized the Test Management service for 4K+ concurrent students on mock-test days, load and stress testing with k6 to remove bottlenecks across APIs, services, and infrastructure."
+  },
   {
     id: 4,
     title: "AutoBot",

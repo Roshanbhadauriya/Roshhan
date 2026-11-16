@@ -16,8 +16,8 @@ function App() {
         {loading ? (
           <motion.div 
             key="loader" 
-            exit={{ opacity: 0 }} 
-            transition={{ duration: 0.6, ease: "easeInOut" }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
           >
             <HolaLoader onComplete={() => setLoading(false)} />
           </motion.div>
@@ -25,8 +25,8 @@ function App() {
           <motion.div 
             key="layout" 
             initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            transition={{ duration: 0.6, ease: "easeInOut" }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
           >
             <BackgroundMusic />
             <Routes>

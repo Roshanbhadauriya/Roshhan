@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import GlitchText from './GlitchText';
-import me1 from '../assets/Roshan.JPG';
+// Same files ImageCollage renders, so this preload warms the browser cache for the hero.
+import me1 from '../assets/roshan-collage.webp';
 import me2 from '../assets/me2.jpg';
-import prize from '../assets/prize.JPG';
+import prize from '../assets/prize-collage.webp';
+
+// Timing (see docs/loader-decisions.md)
+const MIN_DISPLAY_MS = 1200; // fill animation always plays for at least this long
+const MAX_WAIT_MS = 4000; // never block on images longer than this
+const WAIT_FOR_ASSETS_PROGRESS = 90; // bar holds here until images are ready
+const TICK_MS = 50;
+const COMPLETE_HOLD_MS = 200; // pause on 100% before handing off
 
 const HolaLoader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
@@ -56,32 +64,49 @@ const HolaLoader = ({ onComplete }) => {
     };
   }, []);
 
+  // 3. Fill progress, derived from elapsed wall-clock time rather than a tick
+  // count, so throttled timers (background tabs) can't stretch the loader out.
+  const assetsReadyRef = useRef(false);
   useEffect(() => {
-    // 3. Original fill loader
+    assetsReadyRef.current = assetsReady;
+  }, [assetsReady]);
+
+  useEffect(() => {
+    const start = performance.now();
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, 45); // Speed of fill
+      const elapsed = performance.now() - start;
+      const timeProgress = Math.min(100, (elapsed / MIN_DISPLAY_MS) * 100);
+      const canFinish = assetsReadyRef.current || elapsed >= MAX_WAIT_MS;
+      const next = Math.floor(
+        canFinish ? timeProgress : Math.min(timeProgress, WAIT_FOR_ASSETS_PROGRESS)
+      );
+      setProgress(next);
+      if (next >= 100) clearInterval(interval);
+    }, TICK_MS);
 
     return () => {
       clearInterval(interval);
     };
   }, []);
 
-  // 4. Handle Completion (Progress 100% AND Assets Ready)
+  // 4. Hand off once the bar reaches 100% (which already accounts for assets
+  // being ready or MAX_WAIT_MS passing). onComplete is held in a ref and
+  // guarded so a changing prop identity or StrictMode re-run can't fire it twice.
+  const onCompleteRef = useRef(onComplete);
   useEffect(() => {
-    if (progress === 100 && assetsReady) {
-      const timer = setTimeout(() => {
-        if (onComplete) onComplete();
-      }, 600);
-      return () => clearTimeout(timer);
-    }
-  }, [progress, assetsReady, onComplete]);
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+  const completedRef = useRef(false);
+
+  useEffect(() => {
+    if (progress < 100) return;
+    const timer = setTimeout(() => {
+      if (completedRef.current) return;
+      completedRef.current = true;
+      onCompleteRef.current?.();
+    }, COMPLETE_HOLD_MS);
+    return () => clearTimeout(timer);
+  }, [progress]);
 
   // Calculate dynamic Y position based on progress
   // 260 is below the text, -40 is fully above the text

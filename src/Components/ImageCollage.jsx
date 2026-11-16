@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import me1 from '../assets/Roshan.JPG';
+// Resized web copies of Roshan.JPG / prize.JPG (see docs/loader-decisions.md)
+import me1 from '../assets/roshan-collage.webp';
 import me2 from '../assets/me2.jpg';
-import prize from '../assets/prize.JPG';
+import prize from '../assets/prize-collage.webp';
 
 export default function ImageCollage({ startDelay = 2.0 }) {
   const containerRef = useRef(null);

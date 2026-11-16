@@ -5,7 +5,7 @@ export const intro = {
   description:
     "Builder with 1+ years of experience building products across AI and finance based in India (but worldwide working). I'm available for projects, collaborations, and experiments.",
   resumeLink:
-    "https://drive.google.com/file/d/18kzAohnukQWtu1a4hqWWXLAVzWe75o5v/view?usp=drive_link",
+    "https://drive.google.com/file/d/1CmlmGROYKhn49RXT5WPj2MRguBn_ouxH/view?usp=sharing",
   calDotComLink:"https://cal.com/roshhan"
 };
 

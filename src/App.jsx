@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Layout from "./Layout/Layout.jsx";
 import HolaLoader from "./Components/HolaLoader.jsx";
-import BackgroundMusic from "./Components/BackgroundMusic.jsx";
 import AllProjects from "./Pages/AllProjects.jsx";
 import AllGadgets from "./Pages/AllGadgets.jsx";
 import { Routes, Route } from "react-router";
@@ -28,7 +27,6 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
           >
-            <BackgroundMusic />
             <Routes>
               <Route path="/" element={<Layout />} />
               <Route path="/projects" element={<AllProjects />} />
